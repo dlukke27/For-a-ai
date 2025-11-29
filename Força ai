@@ -1,0 +1,128 @@
+index.html
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ForçaAI - Personal Trainer IA</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="style.css">
+    <meta name="theme-color" content="#111">
+</head>
+<body>
+
+<header>
+    <h1>ForçaAI</h1>
+    <p>Seu personal trainer IA direto no celular.</p>
+</header>
+
+<main>
+    <div id="ai-box">
+        <textarea id="userInput" placeholder="Digite seu objetivo: 'quero crescer peito', 'treino para ganhar massa'..."></textarea>
+        <button onclick="generate()">Gerar Treino</button>
+    </div>
+
+    <div id="result"></div>
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>
+
+body {
+    margin: 0;
+    padding: 0;
+    background: #0d0d0d;
+    color: white;
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+header {
+    padding: 20px;
+}
+textarea {
+    width: 90%;
+    height: 120px;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    background: #1a1a1a;
+    color: white;
+    margin-bottom: 10px;
+}
+button {
+    width: 90%;
+    padding: 15px;
+    border: none;
+    border-radius: 10px;
+    background: #ff3333;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+}
+#result {
+    width: 90%;
+    margin: 20px auto;
+    padding: 15px;
+    background: #1a1a1a;
+    border-radius: 10px;
+    min-height: 100px;
+    white-space: pre-wrap;
+}
+
+function generate() {
+    const input = document.getElementById("userInput").value;
+    const box = document.getElementById("result");
+
+    if (!input.trim()) {
+        box.innerText = "Digite um objetivo primeiro!";
+        return;
+    }
+
+    box.innerText = "Gerando treino...";
+
+    setTimeout(() => {
+        box.innerText =
+            "Treino IA baseado no objetivo:\n\n" +
+            "- Aquecimento: 5 min\n" +
+            "- Exercício 1: Supino 4x12\n" +
+            "- Exercício 2: Flexão 4x15\n" +
+            "- Exercício 3: Tríceps banco 4x12\n" +
+            "- Finalização: prancha 2 min\n\n" +
+            "Lembre-se: aumente peso apenas se manter a execução perfeita!";
+    }, 800);
+}
+
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js');
+}
+
+{
+  "name": "ForçaAI - Personal Trainer IA",
+  "short_name": "ForçaAI",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#111111",
+  "icons": []
+}
+
+self.addEventListener("install", e => {
+    e.waitUntil(
+        caches.open("forcaAI-cache").then(cache =>
+            cache.add([
+                "index.html",
+                "style.css",
+                "app.js",
+                "manifest.json"
+            ])
+        )
+    );
+});
+
+self.addEventListener("fetch", e => {
+    e.respondWith(
+        caches.match(e.request).then(response => response || fetch(e.request))
+    );
+});
