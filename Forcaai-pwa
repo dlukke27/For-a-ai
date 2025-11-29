@@ -1,6 +1,6 @@
 / (raiz)
  ├── index.html
  ├── style.css
- ├── app.js
+ ├── app.js "Authorization": "Bearer SUA_API_KEY_AQUI" "Authorization": "Bearer sk-xxxxx..."
  ├── manifest.json
  ├── sw.js
